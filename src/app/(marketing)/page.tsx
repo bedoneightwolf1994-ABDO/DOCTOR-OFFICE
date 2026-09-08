@@ -4,19 +4,22 @@ import { SectionHeading, StarRating, SampleBadge, EmptyState } from '@/component
 import type { Service, PortfolioProject, Review, Publication } from '@/lib/types'
 import { displayReviewerName } from '@/lib/types'
 import { ArrowRight, CheckCircle2 } from 'lucide-react'
+import ReviewsMarquee from '@/components/ReviewsMarquee'
+import ScienceBackdrop from '@/components/ScienceBackdrop'
 
 export const revalidate = 0
 
 export default async function HomePage() {
   const supabase = createClient()
 
-  const [{ data: settings }, { data: profile }, { data: services }, { data: portfolio }, { data: reviews }] =
+  const [{ data: settings }, { data: profile }, { data: services }, { data: portfolio }, { data: reviews }, { data: marqueeReviews }] =
     await Promise.all([
       supabase.from('site_settings').select('*').single(),
       supabase.from('profile').select('*').single(),
       supabase.from('services').select('*').eq('is_published', true).order('sort_order').limit(6),
       supabase.from('portfolio_projects').select('*').eq('is_published', true).eq('visibility', 'public').order('sort_order').limit(3),
       supabase.from('reviews').select('*').eq('status', 'approved').order('created_at', { ascending: false }).limit(3),
+      supabase.from('reviews').select('*').eq('status', 'approved').order('rating', { ascending: false }).limit(10),
     ])
 
   const allReviewsRes = await supabase.from('reviews').select('rating').eq('status', 'approved')
@@ -25,10 +28,14 @@ export default async function HomePage() {
 
   return (
     <>
+      {/* REVIEWS TICKER */}
+      <ReviewsMarquee reviews={(marqueeReviews as Review[]) || []} />
+
       {/* HERO */}
-      <section className="bg-navy-950 text-white">
-        <div className="container-page py-24 md:py-32 grid lg:grid-cols-2 gap-12 items-center">
-          <div>
+      <section className="relative bg-navy-950 text-white overflow-hidden">
+        <ScienceBackdrop />
+        <div className="relative container-page py-24 md:py-32 grid lg:grid-cols-2 gap-12 items-center">
+          <div className="animate-fade-up">
             <p className="text-teal-400 font-semibold uppercase tracking-wider text-sm mb-4">Scientific Research &amp; Academic Consultancy</p>
             <h1 className="font-serif text-4xl md:text-5xl font-bold leading-tight">{settings?.homepage_headline}</h1>
             <p className="mt-6 text-gray-300 text-lg max-w-xl">{settings?.homepage_description}</p>
@@ -37,14 +44,14 @@ export default async function HomePage() {
               <Link href="/portfolio" className="btn-secondary !text-white !border-white/40 hover:!bg-white hover:!text-navy-950">View Portfolio</Link>
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-4 animate-fade-up" style={{ animationDelay: '0.15s' }}>
             {[
               { label: 'Clients Served', value: settings?.stat_clients_served },
               { label: 'Projects Completed', value: settings?.stat_projects_completed },
               { label: 'Publications', value: settings?.stat_publications },
               { label: 'Years Experience', value: settings?.stat_years_experience },
             ].map(s => (
-              <div key={s.label} className="bg-white/5 border border-white/10 rounded-lg p-6 text-center">
+              <div key={s.label} className="bg-white/5 border border-white/10 rounded-lg p-6 text-center backdrop-blur-sm hover:bg-white/10 transition-colors">
                 <p className="text-3xl font-bold text-teal-400">{s.value ?? 0}</p>
                 <p className="text-sm text-gray-300 mt-1">{s.label}</p>
               </div>
@@ -59,7 +66,7 @@ export default async function HomePage() {
         {services && services.length > 0 ? (
           <div className="grid md:grid-cols-3 gap-6">
             {(services as Service[]).map(s => (
-              <div key={s.id} className="card p-6">
+              <div key={s.id} className="card card-hover p-6">
                 {s.title.startsWith('[SAMPLE]') && <SampleBadge />}
                 <h3 className="font-serif text-xl font-bold text-navy-950 mt-2">{s.title}</h3>
                 <p className="text-gray-600 mt-2 text-sm">{s.short_description}</p>
@@ -73,7 +80,7 @@ export default async function HomePage() {
 
       {/* ABOUT SNIPPET */}
       {profile && (
-        <section className="bg-gray-50 section">
+        <section className="relative bg-gray-50 section overflow-hidden">
           <div className="container-page grid lg:grid-cols-3 gap-10 items-center">
             <div className="lg:col-span-1">
               {profile.photo_url ? (
@@ -102,7 +109,7 @@ export default async function HomePage() {
         {portfolio && portfolio.length > 0 ? (
           <div className="grid md:grid-cols-3 gap-6">
             {(portfolio as PortfolioProject[]).map(p => (
-              <Link key={p.id} href={`/portfolio/${p.slug}`} className="card overflow-hidden group">
+              <Link key={p.id} href={`/portfolio/${p.slug}`} className="card card-hover overflow-hidden group">
                 <div className="aspect-video bg-gray-100 overflow-hidden">
                   {p.featured_image_url ? (
                     // eslint-disable-next-line @next/next/no-img-element
@@ -138,7 +145,7 @@ export default async function HomePage() {
           {reviews && reviews.length > 0 ? (
             <div className="grid md:grid-cols-3 gap-6">
               {(reviews as Review[]).map(r => (
-                <div key={r.id} className="bg-white/5 border border-white/10 rounded-lg p-6">
+                <div key={r.id} className="bg-white/5 border border-white/10 rounded-lg p-6 hover:bg-white/10 transition-colors">
                   <StarRating rating={r.rating} />
                   <p className="mt-4 text-gray-200 text-sm leading-relaxed">"{r.review_text}"</p>
                   <p className="mt-4 font-medium text-teal-400 text-sm">{displayReviewerName(r)}</p>
@@ -159,3 +166,4 @@ export default async function HomePage() {
     </>
   )
 }
+

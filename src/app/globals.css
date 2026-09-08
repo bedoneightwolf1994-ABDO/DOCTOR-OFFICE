@@ -30,6 +30,10 @@ body {
   @apply bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow;
 }
 
+.card-hover {
+  @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-gold-500/30;
+}
+
 .badge-sample {
   @apply inline-block text-xs font-semibold bg-gold-500/20 text-gold-500 border border-gold-500/40 px-2 py-0.5 rounded;
 }

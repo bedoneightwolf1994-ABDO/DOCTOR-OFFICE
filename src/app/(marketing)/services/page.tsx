@@ -3,12 +3,16 @@ import { createClient } from '@/lib/supabase/server'
 import { SectionHeading, SampleBadge, EmptyState } from '@/components/ui'
 import type { Service } from '@/lib/types'
 import { CheckCircle2 } from 'lucide-react'
+import InstapayButton from '@/components/InstapayButton'
 
 export const revalidate = 0
 
 export default async function ServicesPage() {
   const supabase = createClient()
-  const { data: services } = await supabase.from('services').select('*').eq('is_published', true).order('sort_order')
+  const [{ data: services }, { data: settings }] = await Promise.all([
+    supabase.from('services').select('*').eq('is_published', true).order('sort_order'),
+    supabase.from('site_settings').select('instapay_url').single(),
+  ])
 
   return (
     <div className="container-page section">
@@ -34,6 +38,11 @@ export default async function ServicesPage() {
                 {s.price_label && <span className="text-teal-600 font-semibold">{s.price_label}</span>}
                 <Link href="/contact" className="text-sm font-medium text-navy-900 hover:text-teal-600">Request this service →</Link>
               </div>
+              {settings?.instapay_url && (
+                <div className="mt-4 pt-4 border-t border-gray-100">
+                  <InstapayButton instapayUrl={settings.instapay_url} className="w-full !py-2.5 text-sm" />
+                </div>
+              )}
             </div>
           ))}
         </div>

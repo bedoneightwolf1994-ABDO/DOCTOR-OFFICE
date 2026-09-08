@@ -23,6 +23,9 @@ export async function updateSiteSettings(formData: FormData) {
     stat_projects_completed: Number(formData.get('stat_projects_completed')) || 0,
     stat_publications: Number(formData.get('stat_publications')) || 0,
     stat_years_experience: Number(formData.get('stat_years_experience')) || 0,
+    instapay_url: String(formData.get('instapay_url') || '') || null,
+    whatsapp_button_enabled: formData.get('whatsapp_button_enabled') === 'on',
+    whatsapp_default_message: String(formData.get('whatsapp_default_message') || '') || 'Hello, I would like to inquire about your research services.',
   }
   const { error } = await supabase.from('site_settings').update(payload).eq('id', 1)
   if (error) return { error: error.message }

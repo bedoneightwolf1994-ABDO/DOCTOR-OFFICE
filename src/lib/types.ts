@@ -102,6 +102,9 @@ export type SiteSettings = {
   stat_projects_completed: number
   stat_publications: number
   stat_years_experience: number
+  instapay_url: string | null
+  whatsapp_button_enabled: boolean
+  whatsapp_default_message: string
 }
 
 export type Client = {

@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { SectionHeading } from '@/components/ui'
 import ContactForm from '@/components/ContactForm'
+import InstapayButton from '@/components/InstapayButton'
 import { Mail, Phone, MessageCircle } from 'lucide-react'
 
 export const revalidate = 0
@@ -33,6 +34,12 @@ export default async function ContactPage() {
             <div className="card p-5 flex items-center gap-3">
               <MessageCircle className="text-teal-600" />
               <div><p className="text-xs text-gray-500">WhatsApp</p><p className="font-medium">{settings.whatsapp_number}</p></div>
+            </div>
+          )}
+          {settings?.instapay_url && (
+            <div className="card p-5">
+              <p className="text-xs text-gray-500 mb-3">Already agreed on a service? Pay securely below.</p>
+              <InstapayButton instapayUrl={settings.instapay_url} className="w-full" />
             </div>
           )}
         </div>

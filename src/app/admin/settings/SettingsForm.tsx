@@ -65,6 +65,27 @@ export default function SettingsForm({ settings }: { settings: any }) {
         </div>
       </section>
 
+      <section>
+        <h3 className="font-semibold text-navy-950 mb-3">WhatsApp Button</h3>
+        <div className="space-y-4">
+          <label className="flex items-center gap-2 text-sm">
+            <input type="checkbox" name="whatsapp_button_enabled" defaultChecked={settings?.whatsapp_button_enabled ?? true} />
+            Show floating WhatsApp button on the public site
+          </label>
+          <p className="text-xs text-gray-400 -mt-2">Uses the WhatsApp Number set above. Make sure it includes your country code (e.g. 201234567890).</p>
+          <div><label className="label">Default WhatsApp Message</label><input name="whatsapp_default_message" defaultValue={settings?.whatsapp_default_message || 'Hello, I would like to inquire about your research services.'} className="input" /></div>
+        </div>
+      </section>
+
+      <section>
+        <h3 className="font-semibold text-navy-950 mb-3">Payment (Instapay)</h3>
+        <div>
+          <label className="label">Instapay Payment Link</label>
+          <input name="instapay_url" defaultValue={settings?.instapay_url || ''} className="input" placeholder="https://ipn.eg/S/yourname/instapay/..." />
+          <p className="text-xs text-gray-400 mt-1">Paste your personal Instapay payment link here. A "Pay via Instapay" button will automatically appear on the Services and Contact pages once this is filled in.</p>
+        </div>
+      </section>
+
       <button type="submit" disabled={submitting} className="btn-primary">{submitting ? 'Saving...' : 'Save Settings'}</button>
     </form>
   )

@@ -11,6 +11,14 @@ export default function MediaClient({ files }: { files: any[] }) {
   async function handleUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0]
     if (!file) return
+
+    const MAX_MB = 12
+    if (file.size > MAX_MB * 1024 * 1024) {
+      toast.error(`File is too large (${(file.size / 1024 / 1024).toFixed(1)}MB). Please use a file under ${MAX_MB}MB.`)
+      e.target.value = ''
+      return
+    }
+
     setUploading(true)
     const res = await uploadMediaFile(file)
     setUploading(false)

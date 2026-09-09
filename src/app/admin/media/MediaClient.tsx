@@ -1,12 +1,14 @@
 'use client'
 import { useState } from 'react'
-import { uploadMediaFile, deleteMediaFile } from '@/lib/actions/media'
+import { deleteMediaFile } from '@/lib/actions/media'
 import ConfirmDeleteButton from '@/components/ConfirmDeleteButton'
 import toast from 'react-hot-toast'
 import { UploadCloud, Copy, Loader2 } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 
 export default function MediaClient({ files }: { files: any[] }) {
   const [uploading, setUploading] = useState(false)
+  const router = useRouter()
 
   async function handleUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0]
@@ -20,11 +22,23 @@ export default function MediaClient({ files }: { files: any[] }) {
     }
 
     setUploading(true)
-    const res = await uploadMediaFile(file)
-    setUploading(false)
-    if (res?.error) toast.error(res.error)
-    else toast.success('File uploaded to Media Library')
-    e.target.value = ''
+    try {
+      const formData = new FormData()
+      formData.append('file', file)
+      const res = await fetch('/api/upload', { method: 'POST', body: formData })
+      const data = await res.json()
+      if (!res.ok) {
+        toast.error(data?.error || 'Upload failed.')
+      } else {
+        toast.success('File uploaded to Media Library')
+        router.refresh()
+      }
+    } catch {
+      toast.error('Network error during upload. Please try again.')
+    } finally {
+      setUploading(false)
+      e.target.value = ''
+    }
   }
 
   function copyLink(url: string) {

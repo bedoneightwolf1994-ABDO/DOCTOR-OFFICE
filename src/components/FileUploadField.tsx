@@ -1,12 +1,11 @@
 'use client'
 import { useState } from 'react'
-import { uploadMediaFile } from '@/lib/actions/media'
 import toast from 'react-hot-toast'
 import { UploadCloud, Loader2 } from 'lucide-react'
 
-// A simple upload button that pushes the file to Supabase Storage and writes
-// the resulting public URL into a hidden text input (so it submits normally
-// as part of the surrounding <form action={...}>).
+// A simple upload button that pushes the file to Supabase Storage via the
+// /api/upload route, and writes the resulting public URL into a hidden text
+// input (so it submits normally as part of the surrounding <form action={...}>).
 export default function FileUploadField({ name, label, accept = 'image/*,.pdf', defaultValue = '' }: {
   name: string; label: string; accept?: string; defaultValue?: string
 }) {
@@ -25,15 +24,23 @@ export default function FileUploadField({ name, label, accept = 'image/*,.pdf', 
     }
 
     setUploading(true)
-    const res = await uploadMediaFile(file)
-    setUploading(false)
-    if (res?.error) {
-      toast.error(res.error)
-    } else if (res?.url) {
-      setUrl(res.url)
-      toast.success('File uploaded')
+    try {
+      const formData = new FormData()
+      formData.append('file', file)
+      const res = await fetch('/api/upload', { method: 'POST', body: formData })
+      const data = await res.json()
+      if (!res.ok) {
+        toast.error(data?.error || 'Upload failed.')
+      } else {
+        setUrl(data.url)
+        toast.success('File uploaded')
+      }
+    } catch (err: any) {
+      toast.error('Network error during upload. Please try again.')
+    } finally {
+      setUploading(false)
+      e.target.value = ''
     }
-    e.target.value = ''
   }
 
   return (

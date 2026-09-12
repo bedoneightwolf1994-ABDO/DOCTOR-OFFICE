@@ -27,12 +27,28 @@ export default async function HomePage() {
   const avgRating = allRatings.length ? (allRatings.reduce((a, b) => a + b, 0) / allRatings.length).toFixed(1) : null
 
   return (
-    <>
+    <div className="relative">
+      {/* FIXED SITE-WIDE BACKGROUND — shows faintly behind every section on
+          this page. Sections below use semi-transparent backgrounds + blur
+          so content stays readable while the image shows through. */}
+      {settings?.hero_background_url && (
+        <>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={settings.hero_background_url}
+            alt=""
+            aria-hidden="true"
+            className="fixed inset-0 w-full h-full object-cover opacity-[0.07] -z-10"
+          />
+          <div className="fixed inset-0 bg-white/40 -z-10" />
+        </>
+      )}
+
       {/* REVIEWS TICKER */}
       <ReviewsMarquee reviews={(marqueeReviews as Review[]) || []} />
 
       {/* HERO */}
-      <section className="relative bg-navy-950 text-white overflow-hidden">
+      <section className="relative bg-navy-950/95 backdrop-blur-sm text-white overflow-hidden">
         <ScienceBackdrop />
         <div className="relative container-page py-24 md:py-32 grid lg:grid-cols-2 gap-12 items-center">
           <div className="animate-fade-up">
@@ -61,7 +77,7 @@ export default async function HomePage() {
       </section>
 
       {/* SERVICES */}
-      <section className="section container-page">
+      <section className="relative section container-page bg-white/70 backdrop-blur-sm">
         <SectionHeading eyebrow="What I Offer" title="Research Services" description="Comprehensive support across the full research lifecycle." />
         {services && services.length > 0 ? (
           <div className="grid md:grid-cols-3 gap-6">
@@ -80,7 +96,7 @@ export default async function HomePage() {
 
       {/* ABOUT SNIPPET */}
       {profile && (
-        <section className="relative bg-gray-50 section overflow-hidden">
+        <section className="relative bg-gray-50/70 backdrop-blur-sm section overflow-hidden">
           <div className="container-page grid lg:grid-cols-3 gap-10 items-center">
             <div className="lg:col-span-1">
               {profile.photo_url ? (
@@ -104,7 +120,7 @@ export default async function HomePage() {
       )}
 
       {/* PORTFOLIO PREVIEW */}
-      <section className="section container-page">
+      <section className="relative section container-page bg-white/70 backdrop-blur-sm">
         <SectionHeading eyebrow="Recent Work" title="Portfolio Highlights" />
         {portfolio && portfolio.length > 0 ? (
           <div className="grid md:grid-cols-3 gap-6">
@@ -128,7 +144,7 @@ export default async function HomePage() {
       </section>
 
       {/* REVIEWS PREVIEW */}
-      <section className="bg-navy-950 text-white section">
+      <section className="relative bg-navy-950/90 backdrop-blur-sm text-white section">
         <div className="container-page">
           <div className="flex flex-wrap justify-between items-end gap-4 mb-12">
             <div>
@@ -158,12 +174,11 @@ export default async function HomePage() {
       </section>
 
       {/* CTA */}
-      <section className="section container-page text-center">
+      <section className="relative section container-page text-center bg-white/70 backdrop-blur-sm">
         <h2 className="font-serif text-3xl font-bold text-navy-950">Ready to start your research project?</h2>
         <p className="text-gray-600 mt-3 max-w-xl mx-auto">Get in touch for a free initial consultation about your study.</p>
         <Link href="/contact" className="btn-primary mt-6"><CheckCircle2 size={18} /> {settings?.cta_text || 'Book a Consultation'}</Link>
       </section>
-    </>
+    </div>
   )
 }
-

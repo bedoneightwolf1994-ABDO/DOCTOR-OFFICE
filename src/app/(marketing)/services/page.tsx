@@ -38,11 +38,9 @@ export default async function ServicesPage() {
                 {s.price_label && <span className="text-teal-600 font-semibold">{s.price_label}</span>}
                 <Link href="/contact" className="text-sm font-medium text-navy-900 hover:text-teal-600">Request this service →</Link>
               </div>
-              {settings?.instapay_url && (
-                <div className="mt-4 pt-4 border-t border-gray-100">
-                  <InstapayButton instapayUrl={settings.instapay_url} className="w-full !py-2.5 text-sm" />
-                </div>
-              )}
+              <div className="mt-4 pt-4 border-t border-gray-100">
+                <InstapayButton instapayUrl={settings?.instapay_url} className="w-full !py-2.5 text-sm" />
+              </div>
             </div>
           ))}
         </div>

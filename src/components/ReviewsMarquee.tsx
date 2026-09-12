@@ -3,8 +3,9 @@ import { displayReviewerName } from '@/lib/types'
 import type { Review } from '@/lib/types'
 
 // A continuously auto-scrolling ticker of approved reviews, shown as a thin
-// banner at the very top of the homepage (above the hero). Pure CSS
-// animation (no JS) so it's fast and works even with JS disabled.
+// banner at the very top of the homepage (above the hero). The animation is
+// defined inline (styled-jsx, built into Next.js) so it works on its own —
+// it doesn't depend on tailwind.config.ts being updated/uploaded correctly.
 export default function ReviewsMarquee({ reviews }: { reviews: Review[] }) {
   if (!reviews || reviews.length === 0) return null
 
@@ -13,7 +14,7 @@ export default function ReviewsMarquee({ reviews }: { reviews: Review[] }) {
 
   return (
     <div className="bg-gold-500/10 border-b border-gold-500/20 overflow-hidden py-2.5 group">
-      <div className="flex whitespace-nowrap animate-marquee group-hover:[animation-play-state:paused]">
+      <div className="marquee-track flex whitespace-nowrap group-hover:[animation-play-state:paused]">
         {items.map((r, i) => (
           <div key={i} className="flex items-center gap-2 mx-8 shrink-0 text-sm text-navy-900">
             <div className="flex gap-0.5">
@@ -26,6 +27,16 @@ export default function ReviewsMarquee({ reviews }: { reviews: Review[] }) {
           </div>
         ))}
       </div>
+      <style>{`
+        .marquee-track {
+          width: max-content;
+          animation: marquee-scroll 30s linear infinite;
+        }
+        @keyframes marquee-scroll {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+      `}</style>
     </div>
   )
 }

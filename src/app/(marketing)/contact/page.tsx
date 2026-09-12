@@ -36,12 +36,10 @@ export default async function ContactPage() {
               <div><p className="text-xs text-gray-500">WhatsApp</p><p className="font-medium">{settings.whatsapp_number}</p></div>
             </div>
           )}
-          {settings?.instapay_url && (
-            <div className="card p-5">
-              <p className="text-xs text-gray-500 mb-3">Already agreed on a service? Pay securely below.</p>
-              <InstapayButton instapayUrl={settings.instapay_url} className="w-full" />
-            </div>
-          )}
+          <div className="card p-5">
+            <p className="text-xs text-gray-500 mb-3">Already agreed on a service? Pay securely below.</p>
+            <InstapayButton instapayUrl={settings?.instapay_url} className="w-full" />
+          </div>
         </div>
       </div>
     </div>

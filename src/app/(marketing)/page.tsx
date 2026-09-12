@@ -6,6 +6,8 @@ import { displayReviewerName } from '@/lib/types'
 import { ArrowRight, CheckCircle2 } from 'lucide-react'
 import ReviewsMarquee from '@/components/ReviewsMarquee'
 import ScienceBackdrop from '@/components/ScienceBackdrop'
+import AnimatedCounter from '@/components/AnimatedCounter'
+import ImageWithSkeleton from '@/components/ImageWithSkeleton'
 
 export const revalidate = 0
 
@@ -68,7 +70,7 @@ export default async function HomePage() {
               { label: 'Years Experience', value: settings?.stat_years_experience },
             ].map(s => (
               <div key={s.label} className="bg-white/5 border border-white/10 rounded-lg p-6 text-center backdrop-blur-sm hover:bg-white/10 transition-colors">
-                <p className="text-3xl font-bold text-teal-400">{s.value ?? 0}</p>
+                <p className="text-3xl font-bold text-teal-400"><AnimatedCounter value={s.value ?? 0} /></p>
                 <p className="text-sm text-gray-300 mt-1">{s.label}</p>
               </div>
             ))}
@@ -128,8 +130,7 @@ export default async function HomePage() {
               <Link key={p.id} href={`/portfolio/${p.slug}`} className="card card-hover overflow-hidden group">
                 <div className="aspect-video bg-gray-100 overflow-hidden">
                   {p.featured_image_url ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={p.featured_image_url} alt={p.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+                    <ImageWithSkeleton src={p.featured_image_url} alt={p.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
                   ) : <div className="w-full h-full flex items-center justify-center text-gray-400 text-sm">No image</div>}
                 </div>
                 <div className="p-5">

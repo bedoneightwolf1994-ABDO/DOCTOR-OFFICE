@@ -1,18 +1,20 @@
+import { CreditCard } from 'lucide-react'
+
+// Hard-coded fallback link — guarantees the button always works even if
+// the "instapay_url" field in Admin > Website Settings is empty or hasn't
+// saved yet. If a value IS set in the admin panel, that value always wins.
+const DEFAULT_INSTAPAY_URL = 'https://ipn.eg/S/abdelrhmanahmedmuc2/instapay/3a8QUi'
+
 // Reusable "Pay via Instapay" button/link.
-// Renders nothing if no link has been set in Website Settings yet.
-//
-// Uses a stylized wallet/payment icon in Instapay's signature purple —
-// not the official Instapay logo (that's trademarked), but instantly
-// recognizable as "pay by mobile wallet" alongside the Instapay name.
 export default function InstapayButton({ instapayUrl, className = '' }: {
-  instapayUrl: string | null
+  instapayUrl?: string | null
   className?: string
 }) {
-  if (!instapayUrl) return null
+  const finalUrl = instapayUrl || DEFAULT_INSTAPAY_URL
 
   return (
     <a
-      href={instapayUrl}
+      href={finalUrl}
       target="_blank"
       rel="noopener noreferrer"
       className={`inline-flex items-center justify-center gap-2.5 bg-gradient-to-r from-[#6C2BD9] to-[#8B3DFF] hover:from-[#5D24BD] hover:to-[#7A34DE] text-white font-semibold px-6 py-3 rounded-md shadow-sm transition-all ${className}`}

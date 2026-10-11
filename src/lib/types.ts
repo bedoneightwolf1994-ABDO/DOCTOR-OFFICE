@@ -1,4 +1,9 @@
 export type Service = {
+  title_ar?: string | null
+  short_description_ar?: string | null
+  full_description_ar?: string | null
+  features_ar?: string[]
+  price_label_ar?: string | null
   id: string
   title: string
   slug: string
@@ -13,6 +18,11 @@ export type Service = {
 }
 
 export type PortfolioProject = {
+  title_ar?: string | null
+  category_ar?: string | null
+  research_field_ar?: string | null
+  description_ar?: string | null
+  services_provided_ar?: string[]
   id: string
   title: string
   slug: string
@@ -47,6 +57,10 @@ export type Review = {
 }
 
 export type Publication = {
+  title_ar?: string | null
+  journal_ar?: string | null
+  research_field_ar?: string | null
+  summary_ar?: string | null
   id: string
   title: string
   authors: string
@@ -105,6 +119,7 @@ export type SiteSettings = {
   instapay_url: string | null
   whatsapp_button_enabled: boolean
   whatsapp_default_message: string
+  hero_background_url: string | null
 }
 
 export type Client = {

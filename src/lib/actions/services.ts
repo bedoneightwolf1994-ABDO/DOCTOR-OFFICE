@@ -3,6 +3,10 @@ import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 
+function parseArList(v: FormDataEntryValue | null) {
+  return String(v || '').split(/[,،]/).map(s => s.trim()).filter(Boolean)
+}
+
 function slugify(s: string) {
   return s.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') + '-' + Math.random().toString(36).slice(2, 6)
 }
@@ -14,6 +18,11 @@ export async function createService(formData: FormData) {
   const supabase = createClient()
   const title = String(formData.get('title') || '')
   const payload = {
+    title_ar: String(formData.get('title_ar') || '') || null,
+    short_description_ar: String(formData.get('short_description_ar') || '') || null,
+    full_description_ar: String(formData.get('full_description_ar') || '') || null,
+    price_label_ar: String(formData.get('price_label_ar') || '') || null,
+    features_ar: parseArList(formData.get('features_ar')),
     title,
     slug: slugify(title),
     short_description: String(formData.get('short_description') || '') || null,
@@ -33,6 +42,11 @@ export async function createService(formData: FormData) {
 export async function updateService(id: string, formData: FormData) {
   const supabase = createClient()
   const payload = {
+    title_ar: String(formData.get('title_ar') || '') || null,
+    short_description_ar: String(formData.get('short_description_ar') || '') || null,
+    full_description_ar: String(formData.get('full_description_ar') || '') || null,
+    price_label_ar: String(formData.get('price_label_ar') || '') || null,
+    features_ar: parseArList(formData.get('features_ar')),
     title: String(formData.get('title') || ''),
     short_description: String(formData.get('short_description') || '') || null,
     full_description: String(formData.get('full_description') || '') || null,

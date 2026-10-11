@@ -1,0 +1,121 @@
+import type { Lang } from './lang'
+
+// Fixed interface text (buttons, headings, labels). Everything the owner
+// writes from the dashboard uses the *_ar fields instead.
+const en = {
+  brand_sub: 'Scientific Research Consultancy',
+  nav_home: 'Home', nav_about: 'About', nav_services: 'Services', nav_portfolio: 'Portfolio',
+  nav_reviews: 'Reviews', nav_publications: 'Publications', nav_contact: 'Contact',
+  book: 'Book a Consultation',
+  lang_switch: 'العربية',
+  hero_eyebrow: 'Scientific Research & Academic Consultancy',
+  view_portfolio: 'View Portfolio',
+  stat_clients: 'Clients Served', stat_projects: 'Projects Completed', stat_pubs: 'Publications', stat_years: 'Years Experience',
+  offer_eyebrow: 'What I Offer', services_title: 'Research Services',
+  services_desc: 'Comprehensive support across the full research lifecycle.',
+  no_services: 'No services published yet.',
+  view_all_services: 'View all services',
+  about_eyebrow: 'About', read_bio: 'Read full bio',
+  recent_work: 'Recent Work', portfolio_highlights: 'Portfolio Highlights', no_portfolio: 'No public portfolio items yet.',
+  testimonials: 'Testimonials', client_reviews: 'Client Reviews',
+  average: 'average', reviews_word: 'reviews', no_reviews: 'No approved reviews yet.',
+  cta_title: 'Ready to start your research project?',
+  cta_desc: 'Get in touch for a free initial consultation about your study.',
+  no_image: 'No image',
+  // services page
+  request_service: 'Request this service',
+  featured: 'FEATURED',
+  pay_instapay: 'Pay via Instapay',
+  // portfolio
+  portfolio_eyebrow: 'Portfolio', previous_work: 'Previous Work',
+  portfolio_desc: 'A selection of completed research projects. Confidential projects are kept private and never shown here.',
+  share: 'Share', link_copied: 'Link copied',
+  services_provided: 'Services Provided', view_pdf: 'View PDF', external_link: 'External Link',
+  // publications
+  pubs_eyebrow: 'Publications', pubs_title: 'Scientific Publications', no_pubs: 'No publications published yet.', view: 'View',
+  // reviews
+  rev_desc: 'Statistics below are calculated automatically from approved reviews.',
+  avg_rating: 'Average Rating', total_reviews: 'Total Reviews', five_star: '5-Star Reviews',
+  // about
+  qualifications: 'Academic Qualifications', specializations: 'Specializations', research_interests: 'Research Interests', achievements: 'Achievements',
+  // contact
+  contact_eyebrow: 'Get In Touch', contact_title: 'Contact & Consultation',
+  contact_desc: "Fill in the form and you'll be contacted to discuss your research needs.",
+  email: 'Email', phone: 'Phone', whatsapp: 'WhatsApp',
+  pay_note: 'Already agreed on a service? Pay securely below.',
+  // contact form
+  thanks_title: 'Thank you for reaching out!', thanks_desc: "Your request has been received. You'll be contacted shortly.",
+  f_name: 'Full Name', f_email: 'Email', f_whatsapp: 'WhatsApp Number', f_field: 'Research Field',
+  f_service: 'Service Required', f_service_ph: 'e.g. Systematic Review', f_desc: 'Project Description',
+  f_method: 'Preferred Contact Method', m_email: 'Email', m_whatsapp: 'WhatsApp', m_phone: 'Phone Call',
+  sending: 'Sending...', send: 'Send Request',
+  // review form
+  rf_title: 'Submit a Review', rf_name_ph: 'Jane Doe', rf_prof: 'Profession', rf_prof_ph: 'PhD Candidate',
+  rf_field_ph: 'Public Health', rf_rating: 'Rating', rf_text: 'Your Review', rf_text_ph: 'Share your experience...',
+  rf_display: 'How should your name be displayed?', rf_full: 'Full Name', rf_first: 'First Name Only', rf_initials: 'Initials Only', rf_anon: 'Anonymous',
+  rf_perm: 'I give permission to publish this review on the website.',
+  rf_submitting: 'Submitting...', rf_submit: 'Submit Review',
+  rf_toast: 'Thank you! Your review will appear after approval.',
+  rf_done_title: 'Thank you for your review!', rf_done_desc: "It's now pending approval and will appear on the site once approved.",
+  anonymous: 'Anonymous',
+  // footer
+  quick_links: 'Quick Links', client_portal: 'Client Portal', contact_h: 'Contact', rights: '© Dr. Abdelrahman Ahmed. All rights reserved.',
+  // whatsapp
+  contact_now: 'Contact Us Now', chat_wa: 'Chat on WhatsApp',
+}
+
+const ar: typeof en = {
+  brand_sub: 'استشارات البحث العلمي',
+  nav_home: 'الرئيسية', nav_about: 'نبذة عني', nav_services: 'الخدمات', nav_portfolio: 'الأعمال',
+  nav_reviews: 'آراء العملاء', nav_publications: 'المنشورات', nav_contact: 'تواصل معنا',
+  book: 'احجز استشارة',
+  lang_switch: 'English',
+  hero_eyebrow: 'الاستشارات البحثية والأكاديمية',
+  view_portfolio: 'شاهد الأعمال',
+  stat_clients: 'عميل تمت خدمته', stat_projects: 'مشروع مكتمل', stat_pubs: 'منشور علمي', stat_years: 'سنوات الخبرة',
+  offer_eyebrow: 'ما أقدمه', services_title: 'الخدمات البحثية',
+  services_desc: 'دعم متكامل في جميع مراحل البحث العلمي.',
+  no_services: 'لا توجد خدمات منشورة بعد.',
+  view_all_services: 'عرض كل الخدمات',
+  about_eyebrow: 'نبذة', read_bio: 'اقرأ السيرة كاملة',
+  recent_work: 'أحدث الأعمال', portfolio_highlights: 'أبرز الأعمال', no_portfolio: 'لا توجد أعمال منشورة بعد.',
+  testimonials: 'الشهادات', client_reviews: 'آراء العملاء',
+  average: 'متوسط التقييم', reviews_word: 'تقييم', no_reviews: 'لا توجد تقييمات معتمدة بعد.',
+  cta_title: 'هل أنت مستعد لبدء مشروعك البحثي؟',
+  cta_desc: 'تواصل معنا للحصول على استشارة أولية مجانية حول دراستك.',
+  no_image: 'لا توجد صورة',
+  request_service: 'اطلب هذه الخدمة',
+  featured: 'مميز',
+  pay_instapay: 'ادفع عبر انستاباي',
+  portfolio_eyebrow: 'الأعمال', previous_work: 'أعمال سابقة',
+  portfolio_desc: 'مجموعة مختارة من المشاريع البحثية المكتملة. المشاريع السرية تظل خاصة ولا تُعرض هنا.',
+  share: 'مشاركة', link_copied: 'تم نسخ الرابط',
+  services_provided: 'الخدمات المقدمة', view_pdf: 'عرض ملف PDF', external_link: 'رابط خارجي',
+  pubs_eyebrow: 'المنشورات', pubs_title: 'المنشورات العلمية', no_pubs: 'لا توجد منشورات بعد.', view: 'عرض',
+  rev_desc: 'الإحصائيات أدناه تُحسب تلقائيًا من التقييمات المعتمدة.',
+  avg_rating: 'متوسط التقييم', total_reviews: 'إجمالي التقييمات', five_star: 'تقييمات 5 نجوم',
+  qualifications: 'المؤهلات الأكاديمية', specializations: 'التخصصات', research_interests: 'الاهتمامات البحثية', achievements: 'الإنجازات',
+  contact_eyebrow: 'تواصل معنا', contact_title: 'التواصل والاستشارات',
+  contact_desc: 'املأ النموذج وسيتم التواصل معك لمناقشة احتياجاتك البحثية.',
+  email: 'البريد الإلكتروني', phone: 'الهاتف', whatsapp: 'واتساب',
+  pay_note: 'اتفقت على خدمة؟ ادفع بأمان من هنا.',
+  thanks_title: 'شكرًا لتواصلك معنا!', thanks_desc: 'تم استلام طلبك وسيتم التواصل معك قريبًا.',
+  f_name: 'الاسم بالكامل', f_email: 'البريد الإلكتروني', f_whatsapp: 'رقم واتساب', f_field: 'المجال البحثي',
+  f_service: 'الخدمة المطلوبة', f_service_ph: 'مثال: مراجعة منهجية', f_desc: 'وصف المشروع',
+  f_method: 'طريقة التواصل المفضلة', m_email: 'البريد الإلكتروني', m_whatsapp: 'واتساب', m_phone: 'مكالمة هاتفية',
+  sending: 'جارٍ الإرسال...', send: 'إرسال الطلب',
+  rf_title: 'اكتب تقييمًا', rf_name_ph: 'الاسم', rf_prof: 'المهنة', rf_prof_ph: 'باحث دكتوراه',
+  rf_field_ph: 'الصحة العامة', rf_rating: 'التقييم', rf_text: 'تقييمك', rf_text_ph: 'شاركنا تجربتك...',
+  rf_display: 'كيف تريد عرض اسمك؟', rf_full: 'الاسم بالكامل', rf_first: 'الاسم الأول فقط', rf_initials: 'الأحرف الأولى فقط', rf_anon: 'مجهول',
+  rf_perm: 'أوافق على نشر هذا التقييم على الموقع.',
+  rf_submitting: 'جارٍ الإرسال...', rf_submit: 'إرسال التقييم',
+  rf_toast: 'شكرًا لك! سيظهر تقييمك بعد الموافقة عليه.',
+  rf_done_title: 'شكرًا على تقييمك!', rf_done_desc: 'تقييمك قيد المراجعة وسيظهر على الموقع بعد الموافقة عليه.',
+  anonymous: 'مجهول',
+  quick_links: 'روابط سريعة', client_portal: 'بوابة العملاء', contact_h: 'تواصل', rights: '© د. عبدالرحمن أحمد. جميع الحقوق محفوظة.',
+  contact_now: 'تواصل معنا الآن', chat_wa: 'تحدث عبر واتساب',
+}
+
+export type Dict = typeof en
+export const dictionaries: Record<Lang, Dict> = { en, ar }
+export function getDict(lang: Lang): Dict { return dictionaries[lang] }

@@ -39,6 +39,14 @@ export default function ProfileForm({ profile }: { profile: any }) {
         <div><label className="label">ResearchGate URL</label><input name="researchgate_url" defaultValue={profile?.researchgate_url || ''} className="input" /></div>
         <div><label className="label">ORCID URL</label><input name="orcid_url" defaultValue={profile?.orcid_url || ''} className="input" /></div>
       </div>
+<div className="border-t border-gold-500/40 pt-5 mt-2 space-y-5" dir="rtl"><p className="font-semibold text-navy-900 text-sm">النسخة العربية (اختياري — لو سبتها فاضية هيظهر النص الإنجليزي)</p>
+        <div><label className="label">المسمى الوظيفي (عربي)</label><input name="professional_title_ar" defaultValue={profile?.professional_title_ar || ''} className="input" /></div>
+        <div><label className="label">النبذة التعريفية (عربي)</label><textarea name="biography_ar" rows={6} defaultValue={profile?.biography_ar || ''} className="input" /></div>
+        <div><label className="label">المؤهلات الأكاديمية (عربي، افصل بينها بفاصلة ،)</label><input name="qualifications_ar" defaultValue={profile?.qualifications_ar?.join('، ')} className="input" /></div>
+        <div><label className="label">التخصصات (عربي، افصل بينها بفاصلة ،)</label><input name="specializations_ar" defaultValue={profile?.specializations_ar?.join('، ')} className="input" /></div>
+        <div><label className="label">الاهتمامات البحثية (عربي، افصل بينها بفاصلة ،)</label><input name="research_interests_ar" defaultValue={profile?.research_interests_ar?.join('، ')} className="input" /></div>
+        <div><label className="label">الإنجازات (عربي، افصل بينها بفاصلة ،)</label><input name="achievements_ar" defaultValue={profile?.achievements_ar?.join('، ')} className="input" /></div>
+      </div>
       <button type="submit" disabled={submitting} className="btn-primary">{submitting ? 'Saving...' : 'Save Profile'}</button>
     </form>
   )

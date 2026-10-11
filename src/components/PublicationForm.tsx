@@ -55,6 +55,12 @@ export default function PublicationForm({ item, action }: {
         <label className="label">Abstract / Summary</label>
         <textarea name="summary" rows={4} defaultValue={item?.summary || ''} className="input" />
       </div>
+<div className="border-t border-gold-500/40 pt-5 mt-2 space-y-5" dir="rtl"><p className="font-semibold text-navy-900 text-sm">النسخة العربية (اختياري — لو سبتها فاضية هيظهر النص الإنجليزي)</p>
+        <div><label className="label">العنوان (عربي)</label><input name="title_ar" defaultValue={item?.title_ar || ''} className="input" /></div>
+        <div><label className="label">المجلة (عربي)</label><input name="journal_ar" defaultValue={item?.journal_ar || ''} className="input" /></div>
+        <div><label className="label">المجال البحثي (عربي)</label><input name="research_field_ar" defaultValue={item?.research_field_ar || ''} className="input" /></div>
+        <div><label className="label">الملخص (عربي)</label><textarea name="summary_ar" rows={4} defaultValue={item?.summary_ar || ''} className="input" /></div>
+      </div>
       <FileUploadField name="image_url" label="Publication Image" accept="image/*" defaultValue={item?.image_url || ''} />
       <div className="flex gap-6">
         <label className="flex items-center gap-2 text-sm"><input type="checkbox" name="is_featured" defaultChecked={item?.is_featured} /> Featured</label>

@@ -55,6 +55,21 @@ export default function SettingsForm({ settings }: { settings: any }) {
         </div>
       </section>
 
+      <section dir="rtl" className="border border-gold-500/40 rounded-lg p-4">
+        <h3 className="font-semibold text-navy-950 mb-3">النسخة العربية للصفحة الرئيسية (اختياري)</h3>
+        <div className="space-y-4">
+          <div><label className="label">العنوان الرئيسي (عربي)</label><input name="homepage_headline_ar" defaultValue={settings?.homepage_headline_ar || ''} className="input" /></div>
+          <div><label className="label">الوصف (عربي)</label><textarea name="homepage_description_ar" rows={3} defaultValue={settings?.homepage_description_ar || ''} className="input" /></div>
+          <div><label className="label">نص زرار الحجز (عربي)</label><input name="cta_text_ar" defaultValue={settings?.cta_text_ar || ''} className="input" /></div>
+          <div><label className="label">نص الفوتر (عربي)</label><input name="footer_text_ar" defaultValue={settings?.footer_text_ar || ''} className="input" /></div>
+        </div>
+      </section>
+
+      <section>
+        <h3 className="font-semibold text-navy-950 mb-3">Homepage Background Image</h3>
+        <FileUploadField name="hero_background_url" label="Custom Background Photo (leave empty to use the default research background)" accept="image/*" defaultValue={settings?.hero_background_url || ''} />
+      </section>
+
       <section>
         <h3 className="font-semibold text-navy-950 mb-3">Homepage Statistics</h3>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">

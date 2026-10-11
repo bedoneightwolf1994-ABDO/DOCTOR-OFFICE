@@ -2,6 +2,10 @@
 import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
 
+function parseArList(v: FormDataEntryValue | null) {
+  return String(v || '').split(/[,،]/).map(s => s.trim()).filter(Boolean)
+}
+
 function parseListField(v: FormDataEntryValue | null) {
   return String(v || '').split(',').map(s => s.trim()).filter(Boolean)
 }
@@ -9,6 +13,12 @@ function parseListField(v: FormDataEntryValue | null) {
 export async function updateProfile(formData: FormData) {
   const supabase = createClient()
   const payload = {
+    professional_title_ar: String(formData.get('professional_title_ar') || '') || null,
+    biography_ar: String(formData.get('biography_ar') || '') || null,
+    qualifications_ar: parseArList(formData.get('qualifications_ar')),
+    specializations_ar: parseArList(formData.get('specializations_ar')),
+    research_interests_ar: parseArList(formData.get('research_interests_ar')),
+    achievements_ar: parseArList(formData.get('achievements_ar')),
     full_name: String(formData.get('full_name') || ''),
     professional_title: String(formData.get('professional_title') || ''),
     biography: String(formData.get('biography') || ''),

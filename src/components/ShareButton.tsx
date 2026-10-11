@@ -1,16 +1,20 @@
 'use client'
 import { Share2, Check } from 'lucide-react'
 import { useState } from 'react'
+import { getDict } from '@/lib/i18n'
+import type { Lang } from '@/lib/lang'
 
 // Uses the native Share sheet on mobile (WhatsApp, Messenger, etc. all show
 // up automatically). Falls back to copying the link on desktop browsers
 // that don't support the Web Share API.
-export default function ShareButton({ title, path, className = '' }: {
+export default function ShareButton({ title, path, className = '', lang = 'en' }: {
+  lang?: Lang
   title: string
   path: string
   className?: string
 }) {
   const [copied, setCopied] = useState(false)
+  const t = getDict(lang)
 
   async function handleShare(e: React.MouseEvent) {
     e.preventDefault()
@@ -38,7 +42,7 @@ export default function ShareButton({ title, path, className = '' }: {
       aria-label="Share this project"
     >
       {copied ? <Check size={16} className="text-teal-600" /> : <Share2 size={16} />}
-      {copied ? 'Link copied' : 'Share'}
+      {copied ? t.link_copied : t.share}
     </button>
   )
 }

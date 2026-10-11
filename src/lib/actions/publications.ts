@@ -3,9 +3,17 @@ import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 
+function parseArList(v: FormDataEntryValue | null) {
+  return String(v || '').split(/[,،]/).map(s => s.trim()).filter(Boolean)
+}
+
 export async function createPublication(formData: FormData) {
   const supabase = createClient()
   const payload = {
+    title_ar: String(formData.get('title_ar') || '') || null,
+    journal_ar: String(formData.get('journal_ar') || '') || null,
+    research_field_ar: String(formData.get('research_field_ar') || '') || null,
+    summary_ar: String(formData.get('summary_ar') || '') || null,
     title: String(formData.get('title') || ''),
     authors: String(formData.get('authors') || ''),
     journal: String(formData.get('journal') || '') || null,
@@ -27,6 +35,10 @@ export async function createPublication(formData: FormData) {
 export async function updatePublication(id: string, formData: FormData) {
   const supabase = createClient()
   const payload = {
+    title_ar: String(formData.get('title_ar') || '') || null,
+    journal_ar: String(formData.get('journal_ar') || '') || null,
+    research_field_ar: String(formData.get('research_field_ar') || '') || null,
+    summary_ar: String(formData.get('summary_ar') || '') || null,
     title: String(formData.get('title') || ''),
     authors: String(formData.get('authors') || ''),
     journal: String(formData.get('journal') || '') || null,

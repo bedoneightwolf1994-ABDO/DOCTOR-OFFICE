@@ -69,6 +69,13 @@ export default function PortfolioForm({ item, action }: {
         <input name="tags" defaultValue={item?.tags?.join(', ') || ''} className="input" placeholder="clinical, epidemiology" />
       </div>
 
+<div className="border-t border-gold-500/40 pt-5 mt-2 space-y-5" dir="rtl"><p className="font-semibold text-navy-900 text-sm">النسخة العربية (اختياري — لو سبتها فاضية هيظهر النص الإنجليزي)</p>
+        <div><label className="label">عنوان المشروع (عربي)</label><input name="title_ar" defaultValue={item?.title_ar || ''} className="input" /></div>
+        <div><label className="label">التصنيف (عربي)</label><input name="category_ar" defaultValue={item?.category_ar || ''} className="input" /></div>
+        <div><label className="label">المجال البحثي (عربي)</label><input name="research_field_ar" defaultValue={item?.research_field_ar || ''} className="input" /></div>
+        <div><label className="label">الوصف (عربي)</label><textarea name="description_ar" rows={4} defaultValue={item?.description_ar || ''} className="input" /></div>
+        <div><label className="label">الخدمات المقدمة (عربي، افصل بينها بفاصلة ،)</label><input name="services_provided_ar" defaultValue={item?.services_provided_ar?.join('، ') || ''} className="input" /></div>
+      </div>
       <div className="grid md:grid-cols-3 gap-4 pt-2">
         <label className="flex items-center gap-2 text-sm"><input type="checkbox" name="is_featured" defaultChecked={item?.is_featured} /> Featured</label>
         <label className="flex items-center gap-2 text-sm"><input type="checkbox" name="is_published" defaultChecked={item?.is_published ?? true} /> Published</label>

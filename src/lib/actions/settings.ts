@@ -2,9 +2,17 @@
 import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
 
+function parseArList(v: FormDataEntryValue | null) {
+  return String(v || '').split(/[,،]/).map(s => s.trim()).filter(Boolean)
+}
+
 export async function updateSiteSettings(formData: FormData) {
   const supabase = createClient()
   const payload = {
+    homepage_headline_ar: String(formData.get('homepage_headline_ar') || '') || null,
+    homepage_description_ar: String(formData.get('homepage_description_ar') || '') || null,
+    cta_text_ar: String(formData.get('cta_text_ar') || '') || null,
+    footer_text_ar: String(formData.get('footer_text_ar') || '') || null,
     site_title: String(formData.get('site_title') || ''),
     logo_url: String(formData.get('logo_url') || '') || null,
     favicon_url: String(formData.get('favicon_url') || '') || null,
@@ -26,6 +34,7 @@ export async function updateSiteSettings(formData: FormData) {
     instapay_url: String(formData.get('instapay_url') || '') || null,
     whatsapp_button_enabled: formData.get('whatsapp_button_enabled') === 'on',
     whatsapp_default_message: String(formData.get('whatsapp_default_message') || '') || 'Hello, I would like to inquire about your research services.',
+    hero_background_url: String(formData.get('hero_background_url') || '') || null,
   }
   const { error } = await supabase.from('site_settings').update(payload).eq('id', 1)
   if (error) return { error: error.message }

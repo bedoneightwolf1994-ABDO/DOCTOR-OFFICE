@@ -3,11 +3,15 @@ import { SectionHeading, StarRating, SampleBadge, EmptyState } from '@/component
 import { displayReviewerName } from '@/lib/types'
 import type { Review } from '@/lib/types'
 import ReviewForm from '@/components/ReviewForm'
+import { getLang, localize, localizeAll } from '@/lib/lang'
+import { getDict } from '@/lib/i18n'
 
 export const revalidate = 0
 
 export default async function ReviewsPage() {
   const supabase = createClient()
+  const lang = getLang()
+  const t = getDict(lang)
   const { data: reviews } = await supabase.from('reviews').select('*').eq('status', 'approved').order('created_at', { ascending: false })
 
   const ratings = (reviews || []).map(r => r.rating)
@@ -16,20 +20,20 @@ export default async function ReviewsPage() {
 
   return (
     <div className="container-page section">
-      <SectionHeading eyebrow="Testimonials" title="Client Reviews" description="Statistics below are calculated automatically — never hard-coded." />
+      <SectionHeading eyebrow={t.testimonials} title={t.client_reviews} description={t.rev_desc} />
 
       <div className="grid grid-cols-3 gap-4 mb-12 max-w-lg">
         <div className="card p-5 text-center">
           <p className="text-3xl font-bold text-navy-950">{avg.toFixed(1)}</p>
-          <p className="text-xs text-gray-500 mt-1">Average Rating</p>
+          <p className="text-xs text-gray-500 mt-1">{t.avg_rating}</p>
         </div>
         <div className="card p-5 text-center">
           <p className="text-3xl font-bold text-navy-950">{ratings.length}</p>
-          <p className="text-xs text-gray-500 mt-1">Total Reviews</p>
+          <p className="text-xs text-gray-500 mt-1">{t.total_reviews}</p>
         </div>
         <div className="card p-5 text-center">
           <p className="text-3xl font-bold text-navy-950">{fiveStarPct}%</p>
-          <p className="text-xs text-gray-500 mt-1">5-Star Reviews</p>
+          <p className="text-xs text-gray-500 mt-1">{t.five_star}</p>
         </div>
       </div>
 
@@ -47,10 +51,10 @@ export default async function ReviewsPage() {
                 </div>
               ))}
             </div>
-          ) : <EmptyState text="No approved reviews yet." />}
+          ) : <EmptyState text={t.no_reviews} />}
         </div>
         <div>
-          <ReviewForm />
+          <ReviewForm lang={lang} />
         </div>
       </div>
     </div>

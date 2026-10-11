@@ -53,3 +53,10 @@ body {
 .admin-sidebar-link.active {
   @apply bg-teal-600 text-white;
 }
+
+/* Arabic mode: use a clean Arabic font everywhere on the public site */
+.font-arabic, .font-arabic * {
+  font-family: 'Cairo', 'Segoe UI', Tahoma, sans-serif !important;
+}
+.font-arabic .tracking-wider, .font-arabic .tracking-wide { letter-spacing: 0; }
+.font-arabic .uppercase { text-transform: none; }

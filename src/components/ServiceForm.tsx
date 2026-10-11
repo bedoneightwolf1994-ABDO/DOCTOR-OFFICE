@@ -48,6 +48,13 @@ export default function ServiceForm({ item, action }: {
           </select>
         </div>
       </div>
+<div className="border-t border-gold-500/40 pt-5 mt-2 space-y-5" dir="rtl"><p className="font-semibold text-navy-900 text-sm">النسخة العربية (اختياري — لو سبتها فاضية هيظهر النص الإنجليزي)</p>
+        <div><label className="label">اسم الخدمة (عربي)</label><input name="title_ar" defaultValue={item?.title_ar || ''} className="input" /></div>
+        <div><label className="label">وصف مختصر (عربي)</label><input name="short_description_ar" defaultValue={item?.short_description_ar || ''} className="input" /></div>
+        <div><label className="label">الوصف الكامل (عربي)</label><textarea name="full_description_ar" rows={4} defaultValue={item?.full_description_ar || ''} className="input" /></div>
+        <div><label className="label">المميزات (عربي، افصل بينها بفاصلة ،)</label><input name="features_ar" defaultValue={item?.features_ar?.join('، ') || ''} className="input" /></div>
+        <div><label className="label">السعر (عربي)</label><input name="price_label_ar" defaultValue={item?.price_label_ar || ''} className="input" /></div>
+      </div>
       <div className="flex gap-6">
         <label className="flex items-center gap-2 text-sm"><input type="checkbox" name="is_featured" defaultChecked={item?.is_featured} /> Featured</label>
         <label className="flex items-center gap-2 text-sm"><input type="checkbox" name="is_published" defaultChecked={item?.is_published ?? true} /> Published</label>

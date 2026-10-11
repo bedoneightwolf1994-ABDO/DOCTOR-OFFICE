@@ -4,26 +4,32 @@ import { SectionHeading, SampleBadge, EmptyState } from '@/components/ui'
 import type { Service } from '@/lib/types'
 import { CheckCircle2 } from 'lucide-react'
 import InstapayButton from '@/components/InstapayButton'
+import { getLang, localize, localizeAll } from '@/lib/lang'
+import { getDict } from '@/lib/i18n'
 
 export const revalidate = 0
 
 export default async function ServicesPage() {
   const supabase = createClient()
-  const [{ data: services }, { data: settings }] = await Promise.all([
+  const lang = getLang()
+  const t = getDict(lang)
+  const [{ data: rawServices }, { data: settings }] = await Promise.all([
     supabase.from('services').select('*').eq('is_published', true).order('sort_order'),
     supabase.from('site_settings').select('instapay_url').single(),
   ])
 
+  const services = localizeAll(rawServices, lang)
+
   return (
     <div className="container-page section">
-      <SectionHeading eyebrow="Services" title="Research Services" description="Every service below is fully editable from the Admin Dashboard — nothing here is hard-coded." />
+      <SectionHeading eyebrow={t.nav_services} title={t.services_title} description={t.services_desc} />
       {services && services.length > 0 ? (
         <div className="grid md:grid-cols-2 gap-6">
           {(services as Service[]).map(s => (
             <div key={s.id} className="card p-8">
               <div className="flex justify-between items-start">
                 <h3 className="font-serif text-2xl font-bold text-navy-950">{s.title}</h3>
-                {s.is_featured && <span className="text-xs bg-gold-500/20 text-gold-500 px-2 py-1 rounded font-semibold">FEATURED</span>}
+                {s.is_featured && <span className="text-xs bg-gold-500/20 text-gold-500 px-2 py-1 rounded font-semibold">{t.featured}</span>}
               </div>
               {s.title.startsWith('[SAMPLE]') && <div className="mt-2"><SampleBadge /></div>}
               <p className="text-gray-600 mt-3">{s.full_description || s.short_description}</p>
@@ -36,15 +42,15 @@ export default async function ServicesPage() {
               )}
               <div className="mt-6 flex items-center justify-between">
                 {s.price_label && <span className="text-teal-600 font-semibold">{s.price_label}</span>}
-                <Link href="/contact" className="text-sm font-medium text-navy-900 hover:text-teal-600">Request this service →</Link>
+                <Link href="/contact" className="text-sm font-medium text-navy-900 hover:text-teal-600">{t.request_service} {lang === 'ar' ? '←' : '→'}</Link>
               </div>
               <div className="mt-4 pt-4 border-t border-gray-100">
-                <InstapayButton instapayUrl={settings?.instapay_url} className="w-full !py-2.5 text-sm" />
+                <InstapayButton lang={lang} instapayUrl={settings?.instapay_url} className="w-full !py-2.5 text-sm" />
               </div>
             </div>
           ))}
         </div>
-      ) : <EmptyState text="No services published yet. Add them from Admin > Services." />}
+      ) : <EmptyState text={t.no_services} />}
     </div>
   )
 }

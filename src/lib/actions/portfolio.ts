@@ -3,6 +3,10 @@ import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 
+function parseArList(v: FormDataEntryValue | null) {
+  return String(v || '').split(/[,،]/).map(s => s.trim()).filter(Boolean)
+}
+
 function slugify(s: string) {
   return s.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') + '-' + Math.random().toString(36).slice(2, 6)
 }
@@ -16,6 +20,11 @@ export async function createPortfolioProject(formData: FormData) {
   const title = String(formData.get('title') || '')
 
   const payload = {
+    title_ar: String(formData.get('title_ar') || '') || null,
+    category_ar: String(formData.get('category_ar') || '') || null,
+    research_field_ar: String(formData.get('research_field_ar') || '') || null,
+    description_ar: String(formData.get('description_ar') || '') || null,
+    services_provided_ar: parseArList(formData.get('services_provided_ar')),
     title,
     slug: slugify(title),
     category: String(formData.get('category') || '') || null,
@@ -46,6 +55,11 @@ export async function updatePortfolioProject(id: string, formData: FormData) {
   const supabase = createClient()
 
   const payload = {
+    title_ar: String(formData.get('title_ar') || '') || null,
+    category_ar: String(formData.get('category_ar') || '') || null,
+    research_field_ar: String(formData.get('research_field_ar') || '') || null,
+    description_ar: String(formData.get('description_ar') || '') || null,
+    services_provided_ar: parseArList(formData.get('services_provided_ar')),
     title: String(formData.get('title') || ''),
     category: String(formData.get('category') || '') || null,
     research_field: String(formData.get('research_field') || '') || null,

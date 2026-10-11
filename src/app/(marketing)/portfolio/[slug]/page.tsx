@@ -4,12 +4,16 @@ import { SampleBadge } from '@/components/ui'
 import { FileText, ExternalLink } from 'lucide-react'
 import ImageWithSkeleton from '@/components/ImageWithSkeleton'
 import ShareButton from '@/components/ShareButton'
+import { getLang, localize, localizeAll } from '@/lib/lang'
+import { getDict } from '@/lib/i18n'
 
 export const revalidate = 0
 
 export default async function PortfolioDetailPage({ params }: { params: { slug: string } }) {
   const supabase = createClient()
-  const { data: p } = await supabase
+  const lang = getLang()
+  const t = getDict(lang)
+  const { data: raw } = await supabase
     .from('portfolio_projects')
     .select('*')
     .eq('slug', params.slug)
@@ -17,7 +21,8 @@ export default async function PortfolioDetailPage({ params }: { params: { slug: 
     .eq('visibility', 'public')
     .single()
 
-  if (!p) return notFound()
+  if (!raw) return notFound()
+  const p = localize(raw, lang)
 
   return (
     <div className="container-page section max-w-4xl">
@@ -27,7 +32,7 @@ export default async function PortfolioDetailPage({ params }: { params: { slug: 
           <h1 className="font-serif text-4xl font-bold text-navy-950 mt-3">{p.title}</h1>
           <p className="text-gray-500 mt-2">{p.category} · {p.research_field} · {p.year}</p>
         </div>
-        <ShareButton title={p.title} path={`/portfolio/${p.slug}`} className="shrink-0 mt-1" />
+        <ShareButton lang={lang} title={p.title} path={`/portfolio/${p.slug}`} className="shrink-0 mt-1" />
       </div>
 
       {p.featured_image_url && (
@@ -40,7 +45,7 @@ export default async function PortfolioDetailPage({ params }: { params: { slug: 
 
       {p.services_provided?.length > 0 && (
         <div className="mt-8">
-          <h3 className="font-serif text-xl font-bold text-navy-950 mb-3">Services Provided</h3>
+          <h3 className="font-serif text-xl font-bold text-navy-950 mb-3">{t.services_provided}</h3>
           <div className="flex flex-wrap gap-2">
             {p.services_provided.map((s: string, i: number) => (
               <span key={i} className="bg-teal-50 text-teal-700 text-sm px-3 py-1 rounded-full">{s}</span>
@@ -60,8 +65,8 @@ export default async function PortfolioDetailPage({ params }: { params: { slug: 
       )}
 
       <div className="flex gap-4 mt-8">
-        {p.pdf_url && <a href={p.pdf_url} target="_blank" className="btn-secondary text-sm"><FileText size={16} /> View PDF</a>}
-        {p.external_link && <a href={p.external_link} target="_blank" className="btn-secondary text-sm"><ExternalLink size={16} /> External Link</a>}
+        {p.pdf_url && <a href={p.pdf_url} target="_blank" className="btn-secondary text-sm"><FileText size={16} /> {t.view_pdf}</a>}
+        {p.external_link && <a href={p.external_link} target="_blank" className="btn-secondary text-sm"><ExternalLink size={16} /> {t.external_link}</a>}
       </div>
 
       {p.tags?.length > 0 && (

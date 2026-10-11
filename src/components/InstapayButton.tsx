@@ -1,4 +1,5 @@
-import { CreditCard } from 'lucide-react'
+import { getDict } from '@/lib/i18n'
+import type { Lang } from '@/lib/lang'
 
 // Hard-coded fallback link — guarantees the button always works even if
 // the "instapay_url" field in Admin > Website Settings is empty or hasn't
@@ -6,7 +7,8 @@ import { CreditCard } from 'lucide-react'
 const DEFAULT_INSTAPAY_URL = 'https://ipn.eg/S/abdelrhmanahmedmuc2/instapay/3a8QUi'
 
 // Reusable "Pay via Instapay" button/link.
-export default function InstapayButton({ instapayUrl, className = '' }: {
+export default function InstapayButton({ instapayUrl, className = '', lang = 'en' }: {
+  lang?: Lang
   instapayUrl?: string | null
   className?: string
 }) {
@@ -25,7 +27,7 @@ export default function InstapayButton({ instapayUrl, className = '' }: {
         <circle cx="17.5" cy="14.5" r="1.6" fill="white" />
         <path d="M5 14.5H12" stroke="white" strokeWidth="1.6" strokeLinecap="round" />
       </svg>
-      Pay via Instapay
+      {getDict(lang).pay_instapay}
     </a>
   )
 }

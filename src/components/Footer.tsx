@@ -1,10 +1,16 @@
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
+import { getLang, localize } from '@/lib/lang'
+import { getDict } from '@/lib/i18n'
 
 export default async function Footer() {
   const supabase = createClient()
-  const { data: settings } = await supabase.from('site_settings').select('*').single()
-  const { data: profile } = await supabase.from('profile').select('*').single()
+  const lang = getLang()
+  const t = getDict(lang)
+  const { data: rawSettings } = await supabase.from('site_settings').select('*').single()
+  const { data: rawProfile } = await supabase.from('profile').select('*').single()
+  const settings = localize(rawSettings, lang)
+  const profile = localize(rawProfile, lang)
 
   return (
     <footer className="bg-navy-950 text-gray-300 mt-24">
@@ -19,26 +25,26 @@ export default async function Footer() {
           </div>
         </div>
         <div>
-          <p className="text-white font-medium mb-3 text-sm uppercase tracking-wide">Quick Links</p>
+          <p className="text-white font-medium mb-3 text-sm uppercase tracking-wide">{t.quick_links}</p>
           <div className="flex flex-col gap-2 text-sm text-gray-400">
-            <Link href="/services" className="hover:text-teal-400">Services</Link>
-            <Link href="/portfolio" className="hover:text-teal-400">Portfolio</Link>
-            <Link href="/publications" className="hover:text-teal-400">Publications</Link>
-            <Link href="/contact" className="hover:text-teal-400">Contact</Link>
-            <Link href="/client/login" className="hover:text-teal-400">Client Portal</Link>
+            <Link href="/services" className="hover:text-teal-400">{t.nav_services}</Link>
+            <Link href="/portfolio" className="hover:text-teal-400">{t.nav_portfolio}</Link>
+            <Link href="/publications" className="hover:text-teal-400">{t.nav_publications}</Link>
+            <Link href="/contact" className="hover:text-teal-400">{t.nav_contact}</Link>
+            <Link href="/client/login" className="hover:text-teal-400">{t.client_portal}</Link>
           </div>
         </div>
         <div>
-          <p className="text-white font-medium mb-3 text-sm uppercase tracking-wide">Contact</p>
+          <p className="text-white font-medium mb-3 text-sm uppercase tracking-wide">{t.contact_h}</p>
           <div className="flex flex-col gap-2 text-sm text-gray-400">
             {settings?.contact_email && <p>{settings.contact_email}</p>}
             {settings?.contact_phone && <p>{settings.contact_phone}</p>}
-            {settings?.whatsapp_number && <p>WhatsApp: {settings.whatsapp_number}</p>}
+            {settings?.whatsapp_number && <p>{t.whatsapp}: {settings.whatsapp_number}</p>}
           </div>
         </div>
       </div>
       <div className="border-t border-white/10 py-5 text-center text-xs text-gray-500">
-        {settings?.footer_text || '© Dr. Abdelrahman Ahmed. All rights reserved.'}
+        {settings?.footer_text || t.rights}
       </div>
     </footer>
   )

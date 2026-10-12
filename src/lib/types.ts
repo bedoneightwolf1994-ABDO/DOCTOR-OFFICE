@@ -44,6 +44,7 @@ export type PortfolioProject = {
 }
 
 export type Review = {
+  reviewer_email?: string | null
   id: string
   reviewer_name: string
   profession: string | null

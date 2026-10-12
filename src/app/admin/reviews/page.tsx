@@ -6,7 +6,10 @@ export const revalidate = 0
 
 export default async function AdminReviewsPage() {
   const supabase = createClient()
-  const { data: reviews } = await supabase.from('reviews').select('*').order('created_at', { ascending: false })
+  const { data: rawReviews } = await supabase.from('reviews').select('*').order('created_at', { ascending: false })
+  const { data: contacts } = await supabase.from('review_contacts').select('review_id, email')
+  const emailById = new Map((contacts || []).map((c: any) => [c.review_id, c.email]))
+  const reviews = (rawReviews || []).map((r: any) => ({ ...r, reviewer_email: emailById.get(r.id) || null }))
 
   const pending = (reviews as Review[] | null)?.filter(r => r.status === 'pending') || []
   const others = (reviews as Review[] | null)?.filter(r => r.status !== 'pending') || []

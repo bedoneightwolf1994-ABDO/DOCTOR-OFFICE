@@ -1,4 +1,5 @@
 'use server'
+import { createAdminClient } from '@/lib/supabase/admin'
 // Public-facing server actions: anyone (no login) can call these.
 // RLS policies (see supabase/policies.sql) restrict what they're allowed to insert.
 import { createClient } from '@/lib/supabase/server'
@@ -7,7 +8,9 @@ import { revalidatePath } from 'next/cache'
 export async function submitReview(formData: FormData) {
   const supabase = createClient()
 
+  const email = String(formData.get('reviewer_email') || '').trim()
   const payload = {
+    id: crypto.randomUUID(),
     reviewer_name: String(formData.get('reviewer_name') || '').trim(),
     profession: String(formData.get('profession') || '').trim() || null,
     research_field: String(formData.get('research_field') || '').trim() || null,
@@ -22,8 +25,17 @@ export async function submitReview(formData: FormData) {
     return { error: 'Please fill in your name and review text.' }
   }
 
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return { error: 'Please enter a valid email address.' }
+  }
+
   const { error } = await supabase.from('reviews').insert(payload)
   if (error) return { error: error.message }
+
+  // Email is stored privately (admin-only table), never shown publicly.
+  try {
+    await createAdminClient().from('review_contacts').insert({ review_id: payload.id, email })
+  } catch { /* review is saved even if this fails */ }
 
   revalidatePath('/reviews')
   return { success: true }

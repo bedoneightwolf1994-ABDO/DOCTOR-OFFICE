@@ -50,6 +50,11 @@ export default function ReviewForm({ lang = 'en' }: { lang?: Lang }) {
         </div>
       </div>
       <div>
+        <label className="label">{t.f_email} *</label>
+        <input name="reviewer_email" type="email" required className="input" placeholder="name@example.com" dir="ltr" />
+        <p className="text-xs text-gray-400 mt-1">{t.rf_email_note}</p>
+      </div>
+      <div>
         <label className="label">{t.f_field}</label>
         <input name="research_field" className="input" placeholder={t.rf_field_ph} />
       </div>

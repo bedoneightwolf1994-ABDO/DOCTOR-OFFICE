@@ -7,9 +7,9 @@ import ConfirmDeleteButton from '@/components/ConfirmDeleteButton'
 import { Check, X, EyeOff, Pencil } from 'lucide-react'
 
 const statusColor: Record<string, string> = {
-  pending: 'bg-yellow-50 text-yellow-700',
-  approved: 'bg-green-50 text-green-700',
-  rejected: 'bg-red-50 text-red-700',
+  pending: 'bg-gray-100 text-gray-600',
+  approved: 'bg-gold-500/15 text-teal-700',
+  rejected: 'bg-navy-900/10 text-navy-800',
   hidden: 'bg-gray-100 text-gray-600',
 }
 
@@ -54,13 +54,16 @@ export default function ReviewCard({ review }: { review: Review }) {
         </div>
         <p className="text-sm text-gray-700 mt-2">"{review.review_text}"</p>
         <p className="text-sm font-medium text-navy-900 mt-2">{review.reviewer_name} <span className="text-gray-400 font-normal">· {review.profession} · displays as "{review.display_preference.replace('_', ' ')}"</span></p>
+        {review.reviewer_email && (
+          <p className="text-xs text-gray-500 mt-1">✉ <a href={`mailto:${review.reviewer_email}`} className="text-teal-600 hover:underline">{review.reviewer_email}</a> <span className="text-gray-400">(private — not shown on the site)</span></p>
+        )}
       </div>
       <div className="flex gap-2 shrink-0">
         {review.status !== 'approved' && (
-          <button onClick={() => setReviewStatus(review.id, 'approved')} className="p-2 rounded bg-green-50 text-green-700 hover:bg-green-100" title="Approve"><Check size={16} /></button>
+          <button onClick={() => setReviewStatus(review.id, 'approved')} className="p-2 rounded bg-gold-500/15 text-teal-700 hover:bg-gold-500/25" title="Approve"><Check size={16} /></button>
         )}
         {review.status !== 'rejected' && (
-          <button onClick={() => setReviewStatus(review.id, 'rejected')} className="p-2 rounded bg-red-50 text-red-700 hover:bg-red-100" title="Reject"><X size={16} /></button>
+          <button onClick={() => setReviewStatus(review.id, 'rejected')} className="p-2 rounded bg-navy-900/10 text-navy-800 hover:bg-navy-900/20" title="Reject"><X size={16} /></button>
         )}
         {review.status === 'approved' && (
           <button onClick={() => setReviewStatus(review.id, 'hidden')} className="p-2 rounded bg-gray-100 text-gray-600 hover:bg-gray-200" title="Hide"><EyeOff size={16} /></button>

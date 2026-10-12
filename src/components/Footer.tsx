@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import { getLang, localize } from '@/lib/lang'
+import { localizeAuto, localizeAutoOne } from '@/lib/translate'
 import { getDict } from '@/lib/i18n'
 
 export default async function Footer() {
@@ -9,8 +10,8 @@ export default async function Footer() {
   const t = getDict(lang)
   const { data: rawSettings } = await supabase.from('site_settings').select('*').single()
   const { data: rawProfile } = await supabase.from('profile').select('*').single()
-  const settings = localize(rawSettings, lang)
-  const profile = localize(rawProfile, lang)
+  const settings = await localizeAutoOne(rawSettings, 'settings', lang)
+  const profile = await localizeAutoOne(rawProfile, 'profile', lang)
 
   return (
     <footer className="bg-navy-950 text-gray-300 mt-24">

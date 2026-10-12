@@ -4,6 +4,7 @@ import { displayReviewerName } from '@/lib/types'
 import type { Review } from '@/lib/types'
 import ReviewForm from '@/components/ReviewForm'
 import { getLang, localize, localizeAll } from '@/lib/lang'
+import { localizeAuto, localizeAutoOne } from '@/lib/translate'
 import { getDict } from '@/lib/i18n'
 
 export const revalidate = 0
@@ -12,8 +13,9 @@ export default async function ReviewsPage() {
   const supabase = createClient()
   const lang = getLang()
   const t = getDict(lang)
-  const { data: reviews } = await supabase.from('reviews').select('*').eq('status', 'approved').order('created_at', { ascending: false })
+  const { data: rawReviews } = await supabase.from('reviews').select('*').eq('status', 'approved').order('created_at', { ascending: false })
 
+  const reviews = await localizeAuto(rawReviews, 'review', lang)
   const ratings = (reviews || []).map(r => r.rating)
   const avg = ratings.length ? ratings.reduce((a, b) => a + b, 0) / ratings.length : 0
   const fiveStarPct = ratings.length ? Math.round((ratings.filter(r => r === 5).length / ratings.length) * 100) : 0

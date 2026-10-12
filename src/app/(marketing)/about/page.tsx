@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { SectionHeading } from '@/components/ui'
 import { CheckCircle2 } from 'lucide-react'
 import { getLang, localize, localizeAll } from '@/lib/lang'
+import { localizeAuto, localizeAutoOne } from '@/lib/translate'
 import { getDict } from '@/lib/i18n'
 
 export const revalidate = 0
@@ -13,7 +14,7 @@ export default async function AboutPage() {
   const { data: rawProfile } = await supabase.from('profile').select('*').single()
 
   if (!rawProfile) return null
-  const profile = localize(rawProfile, lang)
+  const profile = (await localizeAutoOne(rawProfile, 'profile', lang))!
 
   return (
     <div className="container-page section">

@@ -9,6 +9,7 @@ import ScienceBackdrop from '@/components/ScienceBackdrop'
 import AnimatedCounter from '@/components/AnimatedCounter'
 import ImageWithSkeleton from '@/components/ImageWithSkeleton'
 import { getLang, localize, localizeAll } from '@/lib/lang'
+import { localizeAuto, localizeAutoOne } from '@/lib/translate'
 import { getDict } from '@/lib/i18n'
 
 export const revalidate = 0
@@ -18,7 +19,7 @@ export default async function HomePage() {
   const lang = getLang()
   const t = getDict(lang)
 
-  const [{ data: rawSettings }, { data: rawProfile }, { data: rawServices }, { data: rawPortfolio }, { data: reviews }, { data: marqueeReviews }] =
+  const [{ data: rawSettings }, { data: rawProfile }, { data: rawServices }, { data: rawPortfolio }, { data: rawReviews }, { data: rawMarquee }] =
     await Promise.all([
       supabase.from('site_settings').select('*').single(),
       supabase.from('profile').select('*').single(),
@@ -28,10 +29,13 @@ export default async function HomePage() {
       supabase.from('reviews').select('*').eq('status', 'approved').order('rating', { ascending: false }).limit(10),
     ])
 
-  const settings = localize(rawSettings, lang)
-  const profile = localize(rawProfile, lang)
-  const services = localizeAll(rawServices, lang)
-  const portfolio = localizeAll(rawPortfolio, lang)
+  const settings = await localizeAutoOne(rawSettings, 'settings', lang)
+  const profile = await localizeAutoOne(rawProfile, 'profile', lang)
+  const services = await localizeAuto(rawServices, 'service', lang)
+  const portfolio = await localizeAuto(rawPortfolio, 'portfolio', lang)
+
+  const reviews = await localizeAuto(rawReviews, 'review', lang)
+  const marqueeReviews = await localizeAuto(rawMarquee, 'review', lang)
 
   const allReviewsRes = await supabase.from('reviews').select('rating').eq('status', 'approved')
   const allRatings = (allReviewsRes.data || []).map(r => r.rating)

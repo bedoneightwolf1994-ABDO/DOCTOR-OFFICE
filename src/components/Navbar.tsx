@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import { getLang, localize } from '@/lib/lang'
+import { localizeAuto, localizeAutoOne } from '@/lib/translate'
 import { getDict } from '@/lib/i18n'
 import { setLanguage } from '@/lib/actions/lang'
 
@@ -9,7 +10,7 @@ export default async function Navbar() {
   const { data: rawSettings } = await supabase.from('site_settings').select('*').single()
   const lang = getLang()
   const t = getDict(lang)
-  const settings = localize(rawSettings, lang)
+  const settings = await localizeAutoOne(rawSettings, 'settings', lang)
 
   const links = [
     { href: '/', label: t.nav_home },

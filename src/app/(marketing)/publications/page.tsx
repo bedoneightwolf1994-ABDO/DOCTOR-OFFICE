@@ -3,6 +3,7 @@ import { SectionHeading, SampleBadge, EmptyState } from '@/components/ui'
 import type { Publication } from '@/lib/types'
 import { ExternalLink } from 'lucide-react'
 import { getLang, localize, localizeAll } from '@/lib/lang'
+import { localizeAuto, localizeAutoOne } from '@/lib/translate'
 import { getDict } from '@/lib/i18n'
 
 export const revalidate = 0
@@ -13,7 +14,7 @@ export default async function PublicationsPage() {
   const t = getDict(lang)
   const { data: rawPubs } = await supabase.from('publications').select('*').eq('is_published', true).order('sort_order').order('year', { ascending: false })
 
-  const pubs = localizeAll(rawPubs, lang)
+  const pubs = await localizeAuto(rawPubs, 'publication', lang)
 
   return (
     <div className="container-page section">

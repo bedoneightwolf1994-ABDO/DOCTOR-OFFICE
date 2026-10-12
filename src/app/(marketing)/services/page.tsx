@@ -5,6 +5,7 @@ import type { Service } from '@/lib/types'
 import { CheckCircle2 } from 'lucide-react'
 import InstapayButton from '@/components/InstapayButton'
 import { getLang, localize, localizeAll } from '@/lib/lang'
+import { localizeAuto, localizeAutoOne } from '@/lib/translate'
 import { getDict } from '@/lib/i18n'
 
 export const revalidate = 0
@@ -18,7 +19,7 @@ export default async function ServicesPage() {
     supabase.from('site_settings').select('instapay_url').single(),
   ])
 
-  const services = localizeAll(rawServices, lang)
+  const services = await localizeAuto(rawServices, 'service', lang)
 
   return (
     <div className="container-page section">

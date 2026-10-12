@@ -5,6 +5,7 @@ import { FileText, ExternalLink } from 'lucide-react'
 import ImageWithSkeleton from '@/components/ImageWithSkeleton'
 import ShareButton from '@/components/ShareButton'
 import { getLang, localize, localizeAll } from '@/lib/lang'
+import { localizeAuto, localizeAutoOne } from '@/lib/translate'
 import { getDict } from '@/lib/i18n'
 
 export const revalidate = 0
@@ -22,7 +23,7 @@ export default async function PortfolioDetailPage({ params }: { params: { slug: 
     .single()
 
   if (!raw) return notFound()
-  const p = localize(raw, lang)
+  const p = (await localizeAutoOne(raw, 'portfolio', lang))!
 
   return (
     <div className="container-page section max-w-4xl">

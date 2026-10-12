@@ -5,6 +5,7 @@ import type { PortfolioProject } from '@/lib/types'
 import ImageWithSkeleton from '@/components/ImageWithSkeleton'
 import ShareButton from '@/components/ShareButton'
 import { getLang, localize, localizeAll } from '@/lib/lang'
+import { localizeAuto, localizeAutoOne } from '@/lib/translate'
 import { getDict } from '@/lib/i18n'
 
 export const revalidate = 0
@@ -20,7 +21,7 @@ export default async function PortfolioPage() {
     .eq('visibility', 'public')
     .order('sort_order')
 
-  const items = localizeAll(rawItems, lang)
+  const items = await localizeAuto(rawItems, 'portfolio', lang)
 
   return (
     <div className="container-page section">
